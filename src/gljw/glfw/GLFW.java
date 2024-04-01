@@ -4525,12 +4525,12 @@ public final class GLFW {
 			glfwPollEvents				= createNoCriticalMethodHandle("glfwPollEvents", FunctionDescriptor.ofVoid());
 			glfwSwapBuffers				= createCriticalMethodHandle("glfwSwapBuffers", FunctionDescriptor.ofVoid(JAVA_LONG));
 			glfwSwapInterval			= createCriticalMethodHandle("glfwSwapInterval", FunctionDescriptor.ofVoid(JAVA_INT));
-			glfwSetWindowSizeCallback	= createCriticalMethodHandle("glfwSetWindowSizeCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
+			glfwSetWindowSizeCallback	= createNoCriticalMethodHandle("glfwSetWindowSizeCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
 			glfwGetVideoModes			= createCriticalMethodHandle("glfwGetVideoModes", FunctionDescriptor.of(JAVA_LONG, JAVA_LONG, JAVA_LONG));
 			glfwGetKey					= createCriticalMethodHandle("glfwGetKey", FunctionDescriptor.of(JAVA_INT, JAVA_LONG, JAVA_INT));
 			glfwGetMouseButton			= createCriticalMethodHandle("glfwGetMouseButton", FunctionDescriptor.of(JAVA_INT, JAVA_LONG, JAVA_INT));
-			glfwSetKeyCallback			= createCriticalMethodHandle("glfwSetKeyCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
-			glfwSetMouseButtonCallback	= createCriticalMethodHandle("glfwSetMouseButtonCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
+			glfwSetKeyCallback			= createNoCriticalMethodHandle("glfwSetKeyCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
+			glfwSetMouseButtonCallback	= createNoCriticalMethodHandle("glfwSetMouseButtonCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
 			glfwGetTime					= createCriticalMethodHandle("glfwGetTime", FunctionDescriptor.of(JAVA_DOUBLE));
 		}
 
@@ -4545,12 +4545,12 @@ public final class GLFW {
 		}
 
 		{//2.4
-			glfwSetCharCallback			= createCriticalMethodHandle("glfwSetCharCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
+			glfwSetCharCallback			= createNoCriticalMethodHandle("glfwSetCharCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
 		}
 
 		{//2.5
-			glfwSetWindowCloseCallback 		= createCriticalMethodHandle("glfwSetWindowCloseCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
-			glfwSetWindowRefreshCallback 	= createCriticalMethodHandle("glfwSetWindowRefreshCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
+			glfwSetWindowCloseCallback 		= createNoCriticalMethodHandle("glfwSetWindowCloseCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
+			glfwSetWindowRefreshCallback 	= createNoCriticalMethodHandle("glfwSetWindowRefreshCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
 			glfwWaitEvents					= createCriticalMethodHandle("glfwWaitEvents", FunctionDescriptor.ofVoid());
 		}
 
@@ -4569,13 +4569,13 @@ public final class GLFW {
 			glfwGetWindowAttrib					= createCriticalMethodHandle("glfwGetWindowAttrib", FunctionDescriptor.of(JAVA_INT, JAVA_LONG, JAVA_INT));
 			glfwSetWindowUserPointer    		= createCriticalMethodHandle("glfwSetWindowUserPointer", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
 			glfwGetWindowUserPointer			= createCriticalMethodHandle("glfwGetWindowUserPointer", FunctionDescriptor.of(JAVA_LONG, JAVA_LONG));
-			glfwSetWindowPosCallback			= createCriticalMethodHandle("glfwSetWindowPosCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
-			glfwSetWindowFocusCallback			= createCriticalMethodHandle("glfwSetWindowFocusCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
-			glfwSetWindowIconifyCallback		= createCriticalMethodHandle("glfwSetWindowIconifyCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
-			glfwSetFramebufferSizeCallback 		= createCriticalMethodHandle("glfwSetFramebufferSizeCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
+			glfwSetWindowPosCallback			= createNoCriticalMethodHandle("glfwSetWindowPosCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
+			glfwSetWindowFocusCallback			= createNoCriticalMethodHandle("glfwSetWindowFocusCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
+			glfwSetWindowIconifyCallback		= createNoCriticalMethodHandle("glfwSetWindowIconifyCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
+			glfwSetFramebufferSizeCallback 		= createNoCriticalMethodHandle("glfwSetFramebufferSizeCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
 			glfwMakeContextCurrent				= createCriticalMethodHandle("glfwMakeContextCurrent", FunctionDescriptor.ofVoid(JAVA_LONG));
 			glfwGetCurrentContext				= createCriticalMethodHandle("glfwGetCurrentContext", FunctionDescriptor.of(JAVA_LONG));
-			glfwSetErrorCallback				= createCriticalMethodHandle("glfwSetErrorCallback", FunctionDescriptor.ofVoid(JAVA_LONG));
+			glfwSetErrorCallback				= createNoCriticalMethodHandle("glfwSetErrorCallback", FunctionDescriptor.ofVoid(JAVA_LONG));
 			glfwGetMonitors						= createCriticalMethodHandle("glfwGetMonitors", FunctionDescriptor.of(JAVA_LONG, JAVA_LONG));
 			glfwGetPrimaryMonitor				= createCriticalMethodHandle("glfwGetPrimaryMonitor", FunctionDescriptor.of(JAVA_LONG));
 			glfwGetMonitorPos					= createCriticalMethodHandle("glfwGetMonitorPos", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG, JAVA_LONG));
@@ -4590,9 +4590,9 @@ public final class GLFW {
 			glfwSetInputMode					= createCriticalMethodHandle("glfwSetInputMode", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_INT, JAVA_INT));
 			glfwGetCursorPos					= createCriticalMethodHandle("glfwGetCursorPos", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG, JAVA_LONG));
 			glfwSetCursorPos					= createCriticalMethodHandle("glfwSetCursorPos", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_DOUBLE, JAVA_DOUBLE));
-			glfwSetCursorPosCallback			= createCriticalMethodHandle("glfwSetCursorPosCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
-			glfwSetCursorEnterCallback			= createCriticalMethodHandle("glfwSetCursorEnterCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
-			glfwSetScrollCallback				= createCriticalMethodHandle("glfwSetScrollCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
+			glfwSetCursorPosCallback			= createNoCriticalMethodHandle("glfwSetCursorPosCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
+			glfwSetCursorEnterCallback			= createNoCriticalMethodHandle("glfwSetCursorEnterCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
+			glfwSetScrollCallback				= createNoCriticalMethodHandle("glfwSetScrollCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
 			glfwJoystickPresent					= createCriticalMethodHandle("glfwJoystickPresent", FunctionDescriptor.of(JAVA_INT, JAVA_INT));
 			glfwGetJoystickAxes					= createCriticalMethodHandle("glfwGetJoystickAxes", FunctionDescriptor.of(JAVA_LONG, JAVA_INT, JAVA_LONG));
 			glfwGetJoystickName					= createCriticalMethodHandle("glfwGetJoystickName", FunctionDescriptor.of(JAVA_LONG, JAVA_INT));
@@ -4607,8 +4607,8 @@ public final class GLFW {
 			glfwCreateStandardCursor	= createCriticalMethodHandle("glfwCreateStandardCursor", FunctionDescriptor.of(JAVA_LONG, JAVA_INT));
 			glfwDestroyCursor			= createCriticalMethodHandle("glfwDestroyCursor", FunctionDescriptor.ofVoid(JAVA_LONG));
 			glfwSetCursor				= createCriticalMethodHandle("glfwSetCursor", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
-			glfwSetCharModsCallback		= createCriticalMethodHandle("glfwSetCharModsCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
-			glfwSetDropCallback			= createCriticalMethodHandle("glfwSetDropCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
+			glfwSetCharModsCallback		= createNoCriticalMethodHandle("glfwSetCharModsCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
+			glfwSetDropCallback			= createNoCriticalMethodHandle("glfwSetDropCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
 		}
 
 		{//3.2
@@ -4620,7 +4620,7 @@ public final class GLFW {
 			glfwSetWindowMonitor		= createCriticalMethodHandle("glfwSetWindowMonitor", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG, JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT, JAVA_INT));
 			glfwWaitEventsTimeout		= createCriticalMethodHandle("glfwWaitEventsTimeout", FunctionDescriptor.ofVoid(JAVA_DOUBLE));
 			glfwGetKeyName				= createCriticalMethodHandle("glfwGetKeyName", FunctionDescriptor.of(JAVA_LONG, JAVA_INT, JAVA_INT));
-			glfwSetJoystickCallback		= createCriticalMethodHandle("glfwSetJoystickCallback", FunctionDescriptor.ofVoid(JAVA_LONG));
+			glfwSetJoystickCallback		= createNoCriticalMethodHandle("glfwSetJoystickCallback", FunctionDescriptor.ofVoid(JAVA_LONG));
 			glfwGetTimerValue			= createCriticalMethodHandle("glfwGetTimerValue", FunctionDescriptor.of(JAVA_LONG));
 			glfwGetTimerFrequency		= createCriticalMethodHandle("glfwGetTimerFrequency", FunctionDescriptor.of(JAVA_LONG));
 		}
@@ -4632,8 +4632,8 @@ public final class GLFW {
 			glfwSetWindowOpacity				= createCriticalMethodHandle("glfwSetWindowOpacity", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_FLOAT));
 			glfwRequestWindowAttention			= createCriticalMethodHandle("glfwRequestWindowAttention", FunctionDescriptor.ofVoid(JAVA_LONG));
 			glfwSetWindowAttrib					= createCriticalMethodHandle("glfwSetWindowAttrib", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_INT, JAVA_INT));
-			glfwSetWindowMaximizeCallback 		= createCriticalMethodHandle("glfwSetWindowMaximizeCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
-			glfwSetWindowContentScaleCallback 	= createCriticalMethodHandle("glfwSetWindowContentScaleCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG)); 
+			glfwSetWindowMaximizeCallback 		= createNoCriticalMethodHandle("glfwSetWindowMaximizeCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG));
+			glfwSetWindowContentScaleCallback 	= createNoCriticalMethodHandle("glfwSetWindowContentScaleCallback", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG)); 
 			glfwGetError						= createCriticalMethodHandle("glfwGetError", FunctionDescriptor.of(JAVA_INT, JAVA_LONG));
 			glfwGetMonitorWorkarea				= createCriticalMethodHandle("glfwGetMonitorWorkarea", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG, JAVA_LONG, JAVA_LONG, JAVA_LONG));
 			glfwGetMonitorContentScale			= createCriticalMethodHandle("glfwGetMonitorContentScale", FunctionDescriptor.ofVoid(JAVA_LONG, JAVA_LONG, JAVA_LONG));
