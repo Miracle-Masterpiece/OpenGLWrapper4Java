@@ -1,0 +1,6 @@
+
+//linux:
+gcc -I"include" -shared -fPIC -O2 -o funcsptrs_glad.so main.c
+
+//windows:
+x86_64-w64-mingw32-gcc -I"include" -shared -fPIC -O2 -o funcsptrs_glad.dll main.c
