@@ -1273,23 +1273,25 @@ public final class GLFW {
 			long window = (long)glfwCreateWindow.invoke(w, h, title, monitor, share);
 			WINDOWS_OBJECTS.add(new GLFWwindow(window));
 			{
-				glfwSetWindowPosCallback.invoke(window, Callbacks.windowPosCallbackAddress);
-				glfwSetWindowSizeCallback.invoke(window, Callbacks.windowSizeCallbackAddress);
-				glfwSetWindowCloseCallback.invoke(window, Callbacks.windowCloseCallbackAddress);
-				glfwSetWindowRefreshCallback.invoke(window, Callbacks.windowRefreshCallbackAddress);
-				glfwSetWindowFocusCallback.invoke(window, Callbacks.windowFocusCallbackAddress);
-				glfwSetWindowIconifyCallback.invoke(window, Callbacks.windowIconifyCallbackAddress);
-				glfwSetWindowMaximizeCallback.invoke(window, Callbacks.windowMaximizeCallbackAddress);
-				glfwSetFramebufferSizeCallback.invoke(window, Callbacks.framebufferSizeCallbackAddress);
-				glfwSetWindowContentScaleCallback.invoke(window, Callbacks.windowContentScaleCallbackAddress);
-				glfwSetKeyCallback.invoke(window, Callbacks.keyCallback);
-				glfwSetCharCallback.invoke(window, Callbacks.charCallbackAddress);
-				glfwSetCharModsCallback.invoke(window, Callbacks.charModsCallbackAddress);
-				glfwSetMouseButtonCallback.invoke(window, Callbacks.mouseButtonCallbackAddress);
-				glfwSetCursorPosCallback.invoke(window, Callbacks.cursorPosCallbackAddress);
-				glfwSetCursorEnterCallback.invoke(window, Callbacks.cursorEnterCallbackAddress);
-				glfwSetScrollCallback.invoke(window, Callbacks.scrollCallbackAddress);
-				glfwSetDropCallback.invoke(window, Callbacks.dropCallbackAddress);
+				if (window != VoidPointer.nullptr) {					
+					glfwSetWindowPosCallback.invoke(window, Callbacks.windowPosCallbackAddress);
+					glfwSetWindowSizeCallback.invoke(window, Callbacks.windowSizeCallbackAddress);
+					glfwSetWindowCloseCallback.invoke(window, Callbacks.windowCloseCallbackAddress);
+					glfwSetWindowRefreshCallback.invoke(window, Callbacks.windowRefreshCallbackAddress);
+					glfwSetWindowFocusCallback.invoke(window, Callbacks.windowFocusCallbackAddress);
+					glfwSetWindowIconifyCallback.invoke(window, Callbacks.windowIconifyCallbackAddress);
+					glfwSetWindowMaximizeCallback.invoke(window, Callbacks.windowMaximizeCallbackAddress);
+					glfwSetFramebufferSizeCallback.invoke(window, Callbacks.framebufferSizeCallbackAddress);
+					glfwSetWindowContentScaleCallback.invoke(window, Callbacks.windowContentScaleCallbackAddress);
+					glfwSetKeyCallback.invoke(window, Callbacks.keyCallback);
+					glfwSetCharCallback.invoke(window, Callbacks.charCallbackAddress);
+					glfwSetCharModsCallback.invoke(window, Callbacks.charModsCallbackAddress);
+					glfwSetMouseButtonCallback.invoke(window, Callbacks.mouseButtonCallbackAddress);
+					glfwSetCursorPosCallback.invoke(window, Callbacks.cursorPosCallbackAddress);
+					glfwSetCursorEnterCallback.invoke(window, Callbacks.cursorEnterCallbackAddress);
+					glfwSetScrollCallback.invoke(window, Callbacks.scrollCallbackAddress);
+					glfwSetDropCallback.invoke(window, Callbacks.dropCallbackAddress);
+				}
 			}
 			return window;
 		} catch (Throwable e) {throw new RuntimeException(e);}	
