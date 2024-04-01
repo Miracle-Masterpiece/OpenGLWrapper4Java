@@ -47,6 +47,7 @@ import nw4j.wrapper.c.pointers.IntPointer;
 import nw4j.wrapper.c.pointers.VoidPointer;
 import gljw.annotations.Ctype;
 import gljw.annotations.Nullable;
+import gljw.annotations.Unstable;
 import gljw.glfw.callbacks.ICharCallback;
 import gljw.glfw.callbacks.ICharModsCallback;
 import gljw.glfw.callbacks.ICursorEnterCallback;
@@ -1198,7 +1199,6 @@ public final class GLFW {
 		try {
 			int init = (int)glfwInit.invoke();
 			if (init == GLFW_TRUE) {
-				glfwSetErrorCallback.invoke(Callbacks.errorCallbackAddress);
 				glfwSetMonitorCallback.invoke(Callbacks.monitorCallbackAddress);
 				glfwSetJoystickCallback.invoke(Callbacks.joystickCallbackAddress);	
 			}
@@ -1294,7 +1294,7 @@ public final class GLFW {
 			return window;
 		} catch (Throwable e) {throw new RuntimeException(e);}	
 	}
-	
+
 	/**
 	 * This function destroys all remaining windows and cursors, restores any modified gamma ramps and frees any other allocated resources. 
 	 * Once this function is called, you must again call {@link GLFW#glfwInit()} successfully before you will be able to use most GLFW functions.
@@ -2796,7 +2796,7 @@ public final class GLFW {
 
 	/**
 	 * This function sets the error callback, which is called with an error code and a human-readable description each time a GLFW error occurs.
-	 * The error code is set before the callback is called. Calling glfwGetError from the error callback will return the same value as the error code argument.
+	 * The error code is set before the callback is called. Calling {@link GLFW#glfwGetError(long)} from the error callback will return the same value as the error code argument.
 	 * The error callback is called on the thread where the error occurred. If you are using GLFW from multiple threads, your error callback needs to be written accordingly.
 	 * Because the description string may have been generated specifically for that error, it is not guaranteed to be valid after the callback has returned. 
 	 * If you wish to use it after the callback returns, you need to make a copy.
@@ -2822,8 +2822,25 @@ public final class GLFW {
 	 * 
 	 * @see {@link GLFW#glfwGetError(long)}
 	 * @since Added in version 3.0.
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * NOTE!: When testing the callback error on the virtual box, a crash of the java virtual machine was noticed when the window could not be created, which reports that the illegal state of the thread is "guarantee(thread->thread_state() == _thread_in_native) failed: wrong thread state for upcall". 
+	 * During debugging, it turned out that the crash occurs only when the window could not be created, as well as when a callback for errors was installed at that time. 
+	 * Therefore, this method is marked as unstable and the {@link GLFW#glGetError(int)} method should be used
 	 * */
-	public static IErrorCallback glfwSetErrorCallback(IErrorCallback callback) {
+	@Unstable("") public static IErrorCallback glfwSetErrorCallback(IErrorCallback callback) {
+		try {
+			if (callback != null) {
+				glfwSetErrorCallback.invoke(Callbacks.errorCallbackAddress);
+			}	else {
+				glfwSetErrorCallback.invoke(VoidPointer.nullptr);
+			}				
+		}catch(Throwable t) {
+			throw new RuntimeException(t);
+		}
 		IErrorCallback tmp = errorCallbackImpl;
 		errorCallbackImpl = callback;
 		return tmp;
@@ -4407,7 +4424,7 @@ public final class GLFW {
 			return (long)glfwGetClipboardString.invoke(window);
 		}catch(Throwable t) {throw new RuntimeException(t);}
 	} private static final MethodHandle glfwGetClipboardString;
-	
+
 	/**@see GLFW#glfwGetClipboardString(long)*/
 	public static String glfwGetClipboardStringUTF8(@Ctype("GLFWwindow*") long window) {
 		return BytePointer.asAddress(glfwGetClipboardString(window)).toUTF8();
@@ -4481,7 +4498,7 @@ public final class GLFW {
 			return (long)glfwGetTimerValue.invoke();
 		}catch(Throwable t) {throw new RuntimeException(t);}
 	} private static final MethodHandle glfwGetTimerValue;
-	
+
 	/**
 	 * This function returns the frequency, in Hz, of the raw timer.
 	 * 
@@ -4502,6 +4519,35 @@ public final class GLFW {
 			return (long)glfwGetTimerFrequency.invoke();
 		}catch(Throwable t) {throw new RuntimeException(t);}
 	} private static final MethodHandle glfwGetTimerFrequency;
+
+
+	/**
+	 * Returns a string description of the error.
+	 * */
+	public static String getErrorString(int err) {
+		switch(err) {
+		case GLFW_NO_ERROR: 			return makeErrorString("No error has occurred.", "Yay");
+		case GLFW_NOT_INITIALIZED: 		return makeErrorString("This occurs if a GLFW function was called that must not be called unless the library is initialized.", "Application programmer error. Initialize GLFW before calling any function that requires initialization.");
+		case GLFW_NO_CURRENT_CONTEXT: 	return makeErrorString("This occurs if a GLFW function was called that needs and operates on the current OpenGL or OpenGL ES context but no context is current on the calling thread. One such function is glfwSwapInterval.", "Application programmer error. Ensure a context is current before calling functions that require a current context.");
+		case GLFW_INVALID_ENUM: 		return makeErrorString("One of the arguments to the function was an invalid enum value, for example requesting GLFW_RED_BITS with glfwGetWindowAttrib.", "Application programmer error. Fix the offending call.");
+		case GLFW_INVALID_VALUE: 		return makeErrorString("One of the arguments to the function was an invalid value, for example requesting a non-existent OpenGL or OpenGL ES version like 2.7.\nRequesting a valid but unavailable OpenGL or OpenGL ES version will instead result in a GLFW_VERSION_UNAVAILABLE error.", "Application programmer error. Fix the offending call.");
+
+		//																																						It will be fun if this is a problem in this library, but errors will be left under GLFW. I apologize immediately =)
+		case GLFW_OUT_OF_MEMORY: 		return makeErrorString("A memory allocation failed.", "A bug in GLFW or the underlying operating system. Report the bug to our issue tracker https://github.com/glfw/glfw/issues");
+		case GLFW_API_UNAVAILABLE: 		return makeErrorString("GLFW could not find support for the requested API on the system.", "The installed graphics driver does not support the requested API, or does not support it via the chosen context creation backend. Below are a few examples.\nSome pre-installed Windows graphics drivers do not support OpenGL. AMD only supports OpenGL ES via EGL, while Nvidia and Intel only support it via a WGL or GLX extension. macOS does not provide OpenGL ES at all. The Mesa EGL, OpenGL and OpenGL ES libraries do not interface with the Nvidia binary driver. Older graphics drivers do not support Vulkan.");
+		case GLFW_VERSION_UNAVAILABLE: 	return makeErrorString("The requested OpenGL or OpenGL ES version (including any requested context or framebuffer hints) is not available on this machine.", "The machine does not support your requirements. If your application is sufficiently flexible, downgrade your requirements and try again. Otherwise, inform the user that their machine does not match your requirements.\nFuture invalid OpenGL and OpenGL ES versions, for example OpenGL 4.8 if 5.0 comes out before the 4.x series gets that far, also fail with this error and not GLFW_INVALID_VALUE, because GLFW cannot know what future versions will exist.");
+
+		case GLFW_PLATFORM_ERROR : 		return makeErrorString("A platform-specific error occurred that does not match any of the more specific categories.", "A bug or configuration error in GLFW, the underlying operating system or its drivers, or a lack of required resources. Report the issue to our issue tracker https://github.com/glfw/glfw/issues.");
+		case GLFW_FORMAT_UNAVAILABLE: 	return makeErrorString("If emitted during window creation, the requested pixel format is not supported.\nIf emitted when querying the clipboard, the contents of the clipboard could not be converted to the requested format.", "If emitted during window creation, one or more hard constraints(https://www.glfw.org/docs/3.3/window_guide.html#window_hints_hard) did not match any of the available pixel formats. If your application is sufficiently flexible, downgrade your requirements and try again. Otherwise, inform the user that their machine does not match your requirements.\nIf emitted when querying the clipboard, ignore the error or report it to the user, as appropriate.");
+		case GLFW_NO_WINDOW_CONTEXT: 	return makeErrorString("A window that does not have an OpenGL or OpenGL ES context was passed to a function that requires it to have one.", "Application programmer error. Fix the offending call.");
+		}
+		return err + " is not error constant!";
+	}
+
+
+	private static final String makeErrorString(String err, String analysis) {
+		return err + "\nAnalysis:\n" + analysis;
+	}
 
 	static {
 		WINDOWS_OBJECTS = new GLJWLinkedList<>();
