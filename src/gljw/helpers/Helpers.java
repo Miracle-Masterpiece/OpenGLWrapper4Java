@@ -35,7 +35,7 @@ public final class Helpers {
 		try{
 			handle = nativeLinker.downcallHandle(SymbolLookup.loaderLookup().find(name).orElseThrow(), desc, critical);
 		}catch(Exception e) {
-			System.out.println(name + " = " + e);
+			throw e;
 		}
 		return handle;
 	}
@@ -46,7 +46,7 @@ public final class Helpers {
 		try{
 			handle = nativeLinker.downcallHandle(SymbolLookup.loaderLookup().find(name).orElseThrow(), desc);
 		}catch(Exception e) {
-			System.out.println(name + "" + e);
+			throw e;
 		}
 		return handle;
 	}
