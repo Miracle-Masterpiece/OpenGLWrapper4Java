@@ -16,7 +16,7 @@ import nw4j.wrapper.c.pointers.IntPointer;
 class Example {
 
 	private static ThreadLocalStack stack = null;
-	
+
 	private static final int genBuffer(WavData wav) {
 		try(ThreadLocalStack stack = Example.stack){
 			IntPointer $buffer = stack.pushInt(1); 
@@ -25,7 +25,7 @@ class Example {
 			return $buffer.get();
 		}
 	}
-	
+
 	private static final int genSource(int buffer) {
 		try(ThreadLocalStack stack = Example.stack){
 			IntPointer $buffer = stack.pushInt(1); 
@@ -35,27 +35,27 @@ class Example {
 			return $buffer.get();
 		}
 	}
-	
+
 	public static void main(String[] args) throws FileNotFoundException, IOException, FileFormatException, InterruptedException {
 		stack = new ThreadLocalStack(1024);
 		WavData wav = new WavData(new File("./you.wav"));
-		
+
 		long device = alcOpenDevice(nullptr);
-		
+
 		long context = alcCreateContext(device, nullptr);		
 		alcMakeContextCurrent(context);		
-		
+
 		alListener3f(AL_POSITION, 0, 0, 0);
-		
+
 		int buffer = genBuffer(wav);
 		System.out.println(alErrorString(alGetError()));
 		System.out.println(alcErrorString(alcGetError(device)));
 
-	
+
 		int source = genSource(buffer);
 		alSourcei(source, AL_LOOPING, AL_TRUE);
 		alSourcePlay(source);
-		
+
 		Thread.sleep(10000000);
 	}
 }
