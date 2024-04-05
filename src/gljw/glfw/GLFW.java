@@ -40,14 +40,19 @@ package gljw.glfw;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.invoke.MethodHandle;
 import java.util.Iterator;
+
+import nw4j.helpers.Helpers;
+import nw4j.wrapper.c.allocators.MemoryAccessor;
 import nw4j.wrapper.c.pointers.BytePointer;
 import nw4j.wrapper.c.pointers.DoublePointer;
 import nw4j.wrapper.c.pointers.FloatPointer;
 import nw4j.wrapper.c.pointers.IntPointer;
+import nw4j.wrapper.c.pointers.ShortPointer;
 import nw4j.wrapper.c.pointers.VoidPointer;
 import gljw.annotations.Ctype;
 import gljw.annotations.Nullable;
 import gljw.annotations.Unstable;
+import gljw.glfw.GLFWVidmode.ConstGLFWVidmode;
 import gljw.glfw.callbacks.ICharCallback;
 import gljw.glfw.callbacks.ICharModsCallback;
 import gljw.glfw.callbacks.ICursorEnterCallback;
@@ -69,7 +74,6 @@ import gljw.glfw.callbacks.IWindowPosCallback;
 import gljw.glfw.callbacks.IWindowRefreshCallback;
 import gljw.glfw.callbacks.IWindowSizeCallback;
 import gljw.helpers.GLJWLinkedList;
-
 import static java.lang.foreign.ValueLayout.JAVA_INT;
 import static java.lang.foreign.ValueLayout.JAVA_FLOAT;
 import static java.lang.foreign.ValueLayout.JAVA_LONG;
@@ -1545,6 +1549,7 @@ public final class GLFW {
 	/**@see {@link GLFW#glfwSetWindowTitle(long, long)}*/
 	public static void glfwSetWindowTitle(@Ctype("GLFWwindow*") long window, CharSequence title) {
 		try (BytePointer $title = BytePointer.allocUTF8(title)){
+			Helpers.addressNonNull($title.address());
 			glfwSetWindowTitle(window, $title.address());
 		}
 	}
@@ -1737,7 +1742,7 @@ public final class GLFW {
 	 * This function sets the size, in screen coordinates, of the content area of the specified window.
 	 * For full screen windows, this function updates the resolution of its desired video mode and switches to the video mode closest to it, without affecting the window's context. 
 	 * As the context is unaffected, the bit depths of the framebuffer remain unchanged.
-	 * If you wish to update the refresh rate of the desired video mode in addition to its resolution, see glfwSetWindowMonitor.
+	 * If you wish to update the refresh rate of the desired video mode in addition to its resolution, see {@link GLFW#glfwSetWindowMonitor(long, long, int, int, int, int, int)}
 	 * The window manager may put limits on what sizes are allowed. GLFW cannot and should not override these limits.
 	 * 
 	 * @param window	The window to resize.
@@ -3199,8 +3204,22 @@ public final class GLFW {
 	} private static final MethodHandle glfwGetVideoModes;
 
 	/**@see GLFW#glfwGetVideoModes(long, long)*/
-	public static @Ctype("const GLFWvidmode*") long	glfwGetVideoModes(@Ctype("GLFWmonitor*") long monitor, IntPointer count){
-		return glfwGetVideoModes(monitor, count.address());
+	public static GLFWVidmode[]	glfwGetVideoModes(@Ctype("GLFWmonitor*") long monitor){
+		try(BytePointer $count = BytePointer.alloc(MemoryAccessor.NATIVE_SIZEOF_INT)){			
+			@Ctype("const GLFWvidmode*") long vidModes = glfwGetVideoModes(monitor, $count.address());
+			int _count;
+
+			if (MemoryAccessor.NATIVE_SIZEOF_INT == 4) {//sizeof(int) == 4 
+				_count = VoidPointer.dynamic_cast(IntPointer::asAddress, $count).get();			
+			}else { //sizeof(int) == 2	
+				_count = VoidPointer.dynamic_cast(ShortPointer::asAddress, $count).get();
+			} 
+			GLFWVidmode[] vmodes = new GLFWVidmode[_count];
+			for (int i = 0; i < _count; ++i) {
+				vmodes[i] = new ConstGLFWVidmode(vidModes + (i * GLFWVidmode.SIZEOF));
+			}
+			return vmodes;
+		}
 	}
 
 	/**
@@ -3224,9 +3243,9 @@ public final class GLFW {
 	 * 
 	 * @since Added in version 3.0. Replaces glfwGetDesktopMode.
 	 * */
-	public static @Ctype("const GLFWvidmode*") long glfwGetVideoMode(@Ctype("GLFWmonitor*") long monitor){
+	public static GLFWVidmode glfwGetVideoMode(@Ctype("GLFWmonitor*") long monitor){
 		try {
-			return (long)glfwGetVideoMode.invoke(monitor);
+			return new GLFWVidmode((long)glfwGetVideoMode.invoke(monitor));
 		} catch (Throwable e) {throw new RuntimeException(e);}
 	} private static final MethodHandle glfwGetVideoMode;
 

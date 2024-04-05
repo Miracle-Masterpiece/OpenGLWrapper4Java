@@ -6,6 +6,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/NativeWrapper4Java.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/NativeWrapper4Java.0.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
