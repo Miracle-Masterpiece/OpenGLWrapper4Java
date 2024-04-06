@@ -125,10 +125,11 @@ public class GLFWimage extends Struct{
 	@Override
 	public void close() {
 		if (autoFreeClosePixelData == GLFW.GLFW_TRUE) MemoryAccessor.free(getPixels());
-		super.free();
+		super.close();
 	}
 	
 	public GLFWimage() {
+		super();
 		addressNonNull(address());
 		autoFreeClosePixelData = GLFW.GLFW_FALSE;
 	}
