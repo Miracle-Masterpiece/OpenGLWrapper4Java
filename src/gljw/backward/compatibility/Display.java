@@ -172,6 +172,7 @@ public final class Display {
 
 	public static void destroy() {
 		glfwDefaultWindowHints();
+		glfwDestroyWindow(windowHandle);
 		windowHandle = NULL;
 		isCreated = false;
 	}
