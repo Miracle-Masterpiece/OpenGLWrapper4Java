@@ -3488,6 +3488,7 @@ public final class GLFW {
 	public static String glfwGetKeyNameUTF8(int key, int scancode) {
 		@Ctype("const char*")
 		final long chars = glfwGetKeyName(key, scancode);
+		if (chars == VoidPointer.NULL) return null;
 		return BytePointer.asAddress(chars).toUTF8();
 	}
 
@@ -3659,7 +3660,7 @@ public final class GLFW {
 	 * */
 	public static @Ctype("GLFWcursor*") long glfwCreateCursor(final GLFWimage image, int xhot, int yhot) {
 		try {
-			return (long)glfwCreateCursor.invoke(image.address(), xhot, yhot);
+			return (long)glfwCreateCursor.invoke(image != null ? image.address() : VoidPointer.NULL, xhot, yhot);
 		} catch (Throwable e) {throw new RuntimeException(e);}
 	} private static final MethodHandle glfwCreateCursor;
 
