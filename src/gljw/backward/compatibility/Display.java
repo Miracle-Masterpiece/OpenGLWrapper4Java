@@ -27,7 +27,7 @@ public final class Display {
 
 	static @NativeType("GLFWwindow") long windowHandle; 
 	static DisplayMode mode = new DisplayMode(1280, 720);
-	static DisplayMode destopDisplayMode;
+	static DisplayMode desktopDisplayMode;
 	static int w, h;
 	static boolean resizable;
 	static boolean isVisible;
@@ -40,7 +40,7 @@ public final class Display {
 		int init = glfwInit();
 		if (init != GLFW_TRUE) throw new RuntimeException(new GLFWException(getErrorString(glfwGetError(VoidPointer.nullptr))));
 		GLFWVidmode vMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-		destopDisplayMode = new DisplayMode(vMode.getWidth(), vMode.getHeight(), vMode.getRedBits(), vMode.getGreenBits(), vMode.getBlueBits(), vMode.getRefreshRate());
+		desktopDisplayMode = new DisplayMode(vMode.getWidth(), vMode.getHeight(), vMode.getRedBits(), vMode.getGreenBits(), vMode.getBlueBits(), vMode.getRefreshRate());
 		resizable = true;
 		isVisible = true;
 	}
@@ -52,10 +52,10 @@ public final class Display {
 		if (mode == null) throw new RuntimeException("Display mode is null!");
 
 		glfwDefaultWindowHints();
-		glfwWindowHint(GLFW_RED_BITS, 		destopDisplayMode.redBits);
-		glfwWindowHint(GLFW_GREEN_BITS, 	destopDisplayMode.greenBits);
-		glfwWindowHint(GLFW_BLUE_BITS, 		destopDisplayMode.blueBits);
-		glfwWindowHint(GLFW_REFRESH_RATE, 	destopDisplayMode.refreshRate);
+		glfwWindowHint(GLFW_RED_BITS, 		desktopDisplayMode.redBits);
+		glfwWindowHint(GLFW_GREEN_BITS, 	desktopDisplayMode.greenBits);
+		glfwWindowHint(GLFW_BLUE_BITS, 		desktopDisplayMode.blueBits);
+		glfwWindowHint(GLFW_REFRESH_RATE, 	desktopDisplayMode.refreshRate);
 		glfwWindowHint(GLFW_RESIZABLE, 		resizable ? GLFW_TRUE : GLFW_FALSE);
 
 		windowHandle = glfwCreateWindow(mode.w, mode.h, "Title", nullptr, nullptr);
@@ -131,7 +131,7 @@ public final class Display {
 		if (isFullscreen) {
 			glfwSetWindowMonitor(windowHandle, GLFWmonitor, 0, 0, vidMode.getWidth(), vidMode.getHeight(), vidMode.getRefreshRate());			
 		}else {
-			glfwSetWindowMonitor(windowHandle, nullptr, destopDisplayMode.w / 2 - mode.w/2, destopDisplayMode.h / 2 - mode.h/2, mode.w, mode.h, vidMode.getRefreshRate());
+			glfwSetWindowMonitor(windowHandle, nullptr, desktopDisplayMode.w / 2 - mode.w/2, desktopDisplayMode.h / 2 - mode.h/2, mode.w, mode.h, vidMode.getRefreshRate());
 		}
 	}
 
@@ -176,7 +176,7 @@ public final class Display {
 	}
 	
 	public static DisplayMode getDesktopDisplayMode() {
-		return destopDisplayMode;
+		return desktopDisplayMode;
 	}
 
 	public static boolean isVisible() {
