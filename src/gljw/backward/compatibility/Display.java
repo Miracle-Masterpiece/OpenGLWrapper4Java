@@ -1,5 +1,18 @@
+/*
+ * Copyright (c) 2024, Miracle-Masterpiсe <mrmiraclemasterpiece@gmail.com or https://t.me/MiracleMasterpiece>. All rights reserved.
+ * Use is subject to license terms.
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * */
 package gljw.backward.compatibility;
 
+import gljw.exceptions.GLW4JException;
 import gljw.glfw.GLFWException;
 import gljw.glfw.GLFWVidmode;
 import gljw.opengl.OpenGL;
@@ -101,12 +114,15 @@ public final class Display {
 		glfwSetCharCallback(windowHandle, (window, codepoint) -> {
 			Keyboard.addCharEvent((char)codepoint);
 		});
-
-		glfwMakeContextCurrent(windowHandle);
-		OpenGL.initFuncPointers();
 		isCreated = true;
 	}
 
+	public static void makeCurrent() throws GLW4JException {
+		if (windowHandle == NULL) throw new GLW4JException("Display is not created!");
+		glfwMakeContextCurrent(windowHandle);
+		OpenGL.initFuncPointers();
+	}
+	
 	public static void setFullscreen(boolean isFullscreen) {
 		if (Display.isFullscreen == isFullscreen) return;
 		Display.isFullscreen = isFullscreen;
@@ -150,6 +166,15 @@ public final class Display {
 		mode = displayMode;
 	}
 
+	public static void sync(int fps) throws GLW4JException {
+		if (fps < 0) throw new GLW4JException("fps < 0!"); 
+		if (fps == 0) {
+			glfwSwapInterval(0);
+			return;
+		}
+		glfwSwapInterval(1000 / fps);
+	}
+	
 	public static DisplayMode getDesktopDisplayMode() {
 		return destopDisplayMode;
 	}
@@ -212,5 +237,5 @@ public final class Display {
 
 	public static boolean isCreated() {
 		return isCreated;
-	}
+	}	
 }

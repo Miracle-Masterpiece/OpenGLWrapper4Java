@@ -1,3 +1,15 @@
+/*
+ * Copyright (c) 2024, Miracle-Masterpiсe <mrmiraclemasterpiece@gmail.com or https://t.me/MiracleMasterpiece>. All rights reserved.
+ * Use is subject to license terms.
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * */
 package gljw.backward.compatibility;
 
 import java.awt.image.BufferedImage;
@@ -17,8 +29,8 @@ import static nw4j.wrapper.c.allocators.MemoryAccessor.*;
 import static nw4j.wrapper.c.pointers.VoidPointer.*;
 
 public final class Mouse {
-	static double 	x,y;
-	static double 	dx, dy;
+	static int 	x,y;
+	static float 	dx, dy;
 	static int 		wheelY;
 	static boolean 	isGrabbed;
 	static boolean 	isCreated;
@@ -104,19 +116,19 @@ public final class Mouse {
 		return isGrabbed;
 	}
 
-	public static double getX() {
+	public static int getX() {
 		return x;
 	}
 
-	public static double getY() {
+	public static int getY() {
 		return y;
 	}
 
-	public static double getDX() {
+	public static float getDX() {
 		return dx;
 	}
 
-	public static double getDY() {
+	public static float getDY() {
 		return dy;
 	}
 	
@@ -159,18 +171,18 @@ public final class Mouse {
 		double x = getDouble(Buf.$xpos);
 		double y = getDouble(Buf.$ypos);
 		double dx = x - Mouse.x;
-		double dy = y - Mouse.y;
+		double dy = (Display.getHeight() - y) - Mouse.y;
 
 		if (Mouse.isGrabbed()) {
 			glfwSetCursorPos(Display.getWindowHandle(), Display.getWidth() / 2, Display.getHeight() / 2);
 			Mouse.x = Display.w / 2;
 			Mouse.y = Display.h / 2;
 		}else {
-			Mouse.x = x;
-			Mouse.y = y;
+			Mouse.x = (int) x;
+			Mouse.y = Display.getHeight() - (int)y;
 		}
-		Mouse.dx = dx;
-		Mouse.dy = dy;
+		Mouse.dx = (float)dx;
+		Mouse.dy = (float)dy;
 	}
 
 	public static void setCursorPosition(int newx, int newy) {
